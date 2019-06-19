@@ -20,6 +20,8 @@
     "electron": "^5.0.4"
   },
   "dependencies": {
+    "ejs": "^2.6.2",
+    "ejs-electron": "^2.0.3",
     "jquery": "^3.4.1"
   }
 }

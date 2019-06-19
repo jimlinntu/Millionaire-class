@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <title>烏來小學堂</title>
   </head>
   <body>
@@ -15,16 +16,11 @@
             <h1>歡迎來到烏來小學堂!</h1>
         </div>
         <div class="row justify-content-center">
-            <h3>請輸入玩家名字</h3>
+            <h3>請選擇要加入遊戲的玩家</h3>
         </div>
-        <!-- TODO: 直接把所有玩家 load 進來, 用選的 -->
+        <!-- 選擇玩家 -->
         <div class="row justify-content-center">
-            <ul class="list-group">
-              <li class="list-group-item active">j </li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+            <ul class="list-group" id="candidateList">
             </ul>
         </div>
         <div class="row justify-content-center">
@@ -36,9 +32,12 @@
         </div>
         
         <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary mb-2">新增玩家欄位</button>
+            <h3>已經選擇的玩家</h3>
         </div>
 
+        <div class="row" id="playerList">
+        </div>
+        
         <div class="row justify-content-center">
             <button id='startGame' type="button" class="btn btn-primary">開始遊戲</button> 
         </div>
@@ -49,6 +48,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    <script src="./js/renderer.js"></script>
   </body>
 </html>
