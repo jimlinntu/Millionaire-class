@@ -12,6 +12,7 @@ var blackList = []
 for(var i = 0; i < records.length; i++){
     delete records[i]['Timestamp'];
     if(records[i]['題目類型'] == '一字千金'){
+        // 刪除 ABCD 選項, 並把 A 放到 correctAnswer 裡面
         delete records[i]['B'];
         delete records[i]['C'];
         delete records[i]['D'];
@@ -37,24 +38,24 @@ for(var i = 0; i < blackList.length; i++){
     delete records[blackList[i]]; // result in `undefined`
 }
 
-// TODO: Finish question file parser
-// TODO: Finish Question class
 class Question{
     constructor(records){
         // Declare member
         this.type2QuestionList;
         this.type2CurrentQuestionIndex;
         this.typeList;
-        // 
+        // clean records to desired format
         this.cleanRecords(records);
+        // shuffle questions
+        this.shuffleQuestions();
     }
+    // clean records to desired format
     cleanRecords(records){
-        var type2QuestionList = {}; // type : [];
+        var type2QuestionList = {}; // f: type -> [];
         var typeList = [];
         // Parser records
         records.forEach(function(record, i){
             // [*] Note: no need to check undefined, because forEach will pass through it
-
             var type = record['題目類型'];
             delete record['題目類型'] // delete `type` key
             record["desc"] = record['題目敘述'];
@@ -62,20 +63,17 @@ class Question{
             
             if(type != "一字千金"){
                 record["choices"] = [record.A, record.B, record.C, record.D];
-                delete record.A;
-                delete record.B;
-                delete record.C;
-                delete record.D;
+                delete record.A; delete record.B; delete record.C; delete record.D;
             }else{
                 record["choices"] = [];
             }
-
+            // Loop over keys(which are types)
             if(type in type2QuestionList){
                 type2QuestionList[type].push(record);
             }else{
                 // Add type into typeList
                 typeList.push(type);
-                type2QuestionList[type] = [record];
+                type2QuestionList[type] = [record]; // put one record in the list
             }
         })
 
@@ -84,7 +82,7 @@ class Question{
         this.type2CurrentQuestionIndex = {}; // 記錄現在每個類別分別是在第幾個問題
         for(var i = 0; i < typeList.length; i++){
             var type = typeList[i];
-            this.type2CurrentQuestionIndex[type] = -1; // -1 代表這是 list head(or 代表 list end)
+            this.type2CurrentQuestionIndex[type] = -1; // -1 代表這是 list head(or 代表 list end) (pickQuestion 會用到)
         }
         this.typeList = typeList;
     }
@@ -92,7 +90,7 @@ class Question{
     shuffleQuestions(){
         // Can also shuffle choices, but be sure that correct answer is also correct
         for(var type in this.type2QuestionList){
-            if(type == "一字千金") continue; // do not shuffle 一字千金
+            if(type == "一字千金") continue; // do not shuffle 一字千金 題型
             // shuffle all
             this.type2QuestionList[type] = this.shuffle(this.type2QuestionList[type])
             // shuffle each choices
@@ -100,6 +98,7 @@ class Question{
             for(var j = 0; j < this.type2QuestionList[type].length; j++){
                 // shuffle index
                 shuffle_indices = this.shuffle(shuffle_indices)
+                // Apply shuffled indices onto origin choices
                 this.type2QuestionList[type][j].choices = this.apply_shuffle_indices(this.type2QuestionList[type][j].choices, shuffle_indices)
                 // Remember to change correct answer to another
                 var correctAnswerOriginalIndex = this.type2QuestionList[type][j].correctAnswer.charCodeAt(0) - 65;
@@ -107,17 +106,19 @@ class Question{
             }
         }
         if(DEBUG){
-            console.log(util.inspect(this.type2QuestionList, false, null, true));
+            //console.log(util.inspect(this.type2QuestionList, false, null, true));
+            console.log(util.inspect(this.type2QuestionList, false, null));
         }
     }
     apply_shuffle_indices(array, indices){
-        var applied_array = new Array(indices.length);
+        var applied_array = new Array(indices.length); // 
         for(var i = 0; i < indices.length; i++){
-            applied_array[indices[i]] = array[i]; // put array[i] into position of indices[i] in applied_array
+            var target_new_index = indices[i];
+            applied_array[target_new_index] = array[i]; // put array[i] into position of indices[i] in applied_array
         }
         return applied_array;
     }
-
+    // https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
     shuffle(a){
         var j, x, i;
         for (i = a.length - 1; i > 0; i--) {
@@ -130,9 +131,9 @@ class Question{
     }
     getCorrectAnswer(type){
         // Return correct answer choice and correct answer's text
-        var pickedIndex = this.type2CurrentQuestionIndex[type];
-        var pickedQuestion = this.type2QuestionList[type][pickedIndex];
-        var correctAnswerIndex = pickedQuestion.correctAnswer.charCodeAt(0) - 65;
+        var pickedIndex = this.type2CurrentQuestionIndex[type]; // current index for that type
+        var pickedQuestion = this.type2QuestionList[type][pickedIndex]; // current question
+        var correctAnswerIndex = pickedQuestion.correctAnswer.charCodeAt(0) - 65; // ascii to index
         var ret = {"correctAnswer": pickedQuestion.correctAnswer, "correctAnswerText": pickedQuestion.choices[correctAnswerIndex]};
         return ret;
     }
@@ -149,21 +150,23 @@ class Question{
         var pickedIndex = this.type2CurrentQuestionIndex[type];
         // if the index reach the end of the list
         if(pickedIndex == this.type2QuestionList[type].length){
-            pickedIndex = this.type2CurrentQuestionIndex[type] = 0;
-            question.shuffleQuestions();
+            pickedIndex = this.type2CurrentQuestionIndex[type] = 0; // reset to the start of list
+            question.shuffleQuestions(); // reshuffle
             if(DEBUG){
                 console.log("Shuffling");
             }
         }
-        // pick a question from toop
+        // pick a question from the list
         pickedQuestion = this.type2QuestionList[type][pickedIndex];
         return pickedQuestion;
     }
 }
+// Instantiate question class
 question = new Question(records);
 
-question.shuffleQuestions();
-console.log(util.inspect(question, false, null, true));
+if(DEBUG){
+    console.log(util.inspect(question, false, null, true));
+}
 
 
 function test(){

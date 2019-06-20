@@ -6,7 +6,7 @@ ipcRenderer.on("playerListAndScore", function(event, playerListAndScore){
     playerListAndScore.forEach(function(value){
         var name = value["name"];
         var score = value["score"];
-        $("#playerList").append("<tr><th scope='row'>" + name + "</th><td>" + score + "</td></tr>");
+        $("#playerList").append("<tr><th scope='row'><h3>" + name + "</h3></th><td><h3>" + score + "</h3></td></tr>");
     })
 })
 

@@ -10,19 +10,6 @@ const game = require('./game.js')
 let mainWindow
 let scoreboardWindow
 
-// [*] playerScore: playername(chinese) -> score
-
-// TODO: Load all players
-
-// TODO: Record game status
-class Game{
-    constructor(){
-        this.scoreMultiplier = 1; // 1 means the first stage, 2 means the second stage
-    }
-    goToNextStage(){
-        this.scoreMultiplier = 2;
-    }
-}
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -75,7 +62,9 @@ app.on('activate', function () {
 
 ipcMain.on('startGame', function(e, playerList){
     mainWindow.loadFile('./pages/choose.html');
-    game.nowPlayerList = playerList;
+    // Initialize current player list
+    game.initPlayer(playerList);
+    console.log("Player List: ");
     console.log(game.nowPlayerList);
     // [*] Wait until loaded and send playerList to next page
     mainWindow.webContents.once('did-finish-load', function(){
@@ -86,9 +75,11 @@ ipcMain.on('startGame', function(e, playerList){
 ipcMain.on("questionTypeDetermined",function(e, choosenTypeStr){
     mainWindow.loadFile('./pages/question.html');
     mainWindow.webContents.once('did-finish-load', function(){
-        // TODO: pick a question
+        // pick a question
         pickedQuestionDict = question.pickQuestion(choosenTypeStr);
         pickedQuestionDict.type = choosenTypeStr;
+        // record game current question type
+        game.nowType = choosenTypeStr;
         mainWindow.webContents.send('questionInformation', pickedQuestionDict);
     })
 })
@@ -96,34 +87,44 @@ ipcMain.on("questionTypeDetermined",function(e, choosenTypeStr){
 ipcMain.on("showAnswer", function(e){
     mainWindow.loadFile("./pages/correctAnswer.html");
     mainWindow.webContents.once('did-finish-load', function(){
-        var correctAnswer = "D";
-        var correctAnswerText = "Test";
-        
+        var type = game.nowType;
         var ret = question.getCorrectAnswer(type);
-        mainWindow.webContents.send('showCorrectAnswer', ret.correctAnswer, ret.correctAnswerText, playerList);
+        mainWindow.webContents.send('showCorrectAnswer', ret.correctAnswer, ret.correctAnswerText, game.nowPlayerList);
     })
 })
 
 ipcMain.on("nextStage", function(e, correctList){
-    // TODO: Add score
-    // TODO: Update `Game`
+    // update score
+    game.updateScore(correctList);
+    // go to next stage
+    game.goToNextStage();
+    // 印出 result 以免程式突然 crash 還有救
+    console.log("Result:")
+    console.log(game.getResult());
     mainWindow.loadFile("./pages/choose.html");
     mainWindow.webContents.once('did-finish-load', function(){
     })
 })
 ipcMain.on("continueStage", function(e, correctList){
-    // TODO: Add score
+    // update score
+    game.updateScore(correctList);
+    // 印出 result 以免程式突然 crash 還有救
+    console.log("Result:")
+    console.log(game.getResult());
+
     mainWindow.loadFile("./pages/choose.html");
     mainWindow.webContents.once('did-finish-load', function(){
     })
 })
 ipcMain.on("end", function(e, correctList){
-    // TODO: Add score
-    // TODO: Show result
-
+    // update score
+    game.updateScore(correctList);
+    // 印出 result 以免程式突然 crash 還有救
+    console.log("Result:")
+    console.log(game.getResult());
     mainWindow.loadFile("./pages/result.html");
     mainWindow.webContents.once('did-finish-load', function(){
-        var playerListAndScore = [{"name": "林子雋", "score": 100}];
+        var playerListAndScore = game.getResult();
         mainWindow.webContents.send("playerListAndScore", playerListAndScore);
     })
 })
