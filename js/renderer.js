@@ -5,39 +5,31 @@ window.$ = window.jQuery = require('jquery');
 const {ipcRenderer} = require('electron')
 
 var startGameButton = document.getElementById('startGame')
-if(startGameButton){
-    startGameButton.addEventListener('click', function(e){
-    ipcRenderer.send('startGame');
-    });
-}
+startGameButton.addEventListener('click', function(e){
+var playerList = getPlayerList();
+ipcRenderer.send('startGame', playerList);
+});
 
-/*
-let playerList = null;
-ipcRenderer.on('playerList', function(event, playerList_){
-    playerList = playerList_;
-    var playerListDom = $("#playerList");
-    console.log(playerListDom);
-    playerList.forEach(function(value, index, array){
-        playerListDom.append("<li class='list-group-item'>"+ value + "</li>")
-    });
-})*/
-
+var candidate_selector = "#candidateList div div button";
 ipcRenderer.on('candidateList', function(event, candidateList){
     var candidateListDom = $("#candidateList");
-    console.log(candidateListDom);
+    var prefix = "<div class='card col-3'><div class='card-body'><button type='button' class='btn btn-light btn-lg'><h3>"
+    var suffix = "</h3></button></div></div>";
+
     candidateList.forEach(function(value, index, array){
-        candidateListDom.append("<li class='list-group-item'>"+ value + "</li>");
+        candidateListDom.append(prefix + value + suffix);
     });
 
 
     // Add event listener on  candidateList
-    var candidateListItem= $("#candidateList li");
+    var candidateListItem= $(candidate_selector);
     candidateListItem.click(function(){
-        // Update li into active or deactivate it
-        if($(this).hasClass("active")){
-            $(this).removeClass("active");
+        if($(this).hasClass("btn-light")){
+            $(this).removeClass("btn-light");
+            $(this).addClass("btn-primary");
         }else{
-            $(this).addClass("active");
+            $(this).removeClass("btn-primary");
+            $(this).addClass("btn-light");
         }
         // Update playerList
         updatePlayerList();
@@ -45,14 +37,25 @@ ipcRenderer.on('candidateList', function(event, candidateList){
 })
 
 function updatePlayerList(){
-    var candidateListDom = $("#candidateList");
+    var candidateListDom = $(candidate_selector);
     // clear playerList children 
     var playerListDom = $("#playerList");
     playerListDom.empty();
-    candidateListDom.children().each(function(index){
-        if($(this).hasClass("active")){
-            playerListDom.append("<div class='col-3' style='color:blue'>"+ $(this).text() +"</div>")
+    candidateListDom.each(function(index){
+        if($(this).hasClass("btn-primary")){
+            playerListDom.append("<div class='col-3'><h3>"+ $(this).text() +"</h3></div>")
         }
     })
 
+}
+// get selected playerList
+function getPlayerList(){
+    var candidateListDom = $(candidate_selector);
+    var playerList = [];
+    candidateListDom.each(function(index){
+        if($(this).hasClass("btn-primary")){
+            playerList.push($(this).text());
+        }
+    })
+    return playerList;
 }

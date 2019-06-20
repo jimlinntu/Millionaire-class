@@ -1,4 +1,8 @@
 #candidateList {
-    height: 200px; 
+    height: 40vh; 
+    overflow-y: scroll;
+}
+#playerList{
+    height: 20vh;
     overflow-y: scroll;
 }

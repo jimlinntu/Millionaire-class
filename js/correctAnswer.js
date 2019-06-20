@@ -1,8 +1,8 @@
 window.$ = window.jQuery = require('jquery');
 const {ipcRenderer} = require('electron')
 
-ipcRenderer.on('showCorrectAnswer', function(e, correctAnswer, playerList){
-    $("#answer").text(correctAnswer);
+ipcRenderer.on('showCorrectAnswer', function(e, correctAnswerChoice, correctAnswerText, playerList){
+    $("#answer").text(correctAnswerChoice + ": " + correctAnswerText);
     playerList.forEach(function(value){
         var prefix = "<div class='form-check'><input class='form-check-input' type='checkbox'><label class='form-check-label'>"
         var suffix = "</label></div>"

@@ -7,23 +7,27 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/correctAnswer.css">
     <title>烏來小學堂</title>
   </head>
   <body>
     <div class="container">
         <div class="row justify-content-center">
-            <h1>題型:  </h1>
-            <h1 id="choosenType"></h1>
+            <h1>正確解答為:  </h1>
         </div>
         <div class="row justify-content-center">
-            <h2 id="desc"></h2>
-        </div>
-        <div class="row justify-content-center" id="choices">
-            <!--jquery will add choices here -->
+            <h2 id="answer"></h2>
         </div>
         <div class="row justify-content-center">
-            <button id='showAnswer' type="button" class="btn btn-primary">公佈答案</button> 
+            <h2>請選出有答對的玩家</h2>
+        </div>
+        <div id="playerList">
+            <!-- jquery will add to it -->
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-primary" id="nextStage">進入第二階段</button> 
+            <button type="button" class="btn btn-info" id="continueStage">繼續第一階段</button> 
+            <button type="button" class="btn btn-success" id="end">結束(結算分數)</button> 
         </div>
     </div>
     <!-- Optional JavaScript -->
@@ -32,6 +36,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- You can also require other files to run in this process -->
-    <script src="./js/question.js"></script>
+    <script src="../js/correctAnswer.js"></script>
   </body>
 </html>

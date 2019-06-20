@@ -1,25 +1,22 @@
 {
-  "name": "electron-quick-start",
+  "name": "Millionaire-class",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A field game application",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/jimlinntu/Millionaire-class",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Millionaire-class"
   ],
-  "author": "GitHub",
+  "author": "jimlinntu",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^5.0.4"
   },
   "dependencies": {
+    "csv": "^5.1.1",
     "ejs": "^2.6.2",
     "ejs-electron": "^2.0.3",
     "jquery": "^3.4.1"

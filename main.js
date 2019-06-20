@@ -1,6 +1,9 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
+const question = require('./question.js')
+const game = require('./game.js')
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -8,48 +11,23 @@ let mainWindow
 let scoreboardWindow
 
 // [*] playerScore: playername(chinese) -> score
-let candidateList = ["林子雋", "習大大", "川大大", "愛迪生", "發明者", "祖克柏"]// TODO: Load all player
-let playerList = ["林子雋", "習大大"]; 
-let playerScore = {};
-let questionTopics = ["數學"];
-let questionInfoList = [];
 
 // TODO: Load all players
-// TODO: Finish question file parser
-// TODO: Finish Question class
-class Question{
+
+// TODO: Record game status
+class Game{
     constructor(){
-        this.nowType = null; // Record current type
-        this.nowQuestionIndex = -1; // Record current question index in nowType
-        this.type2QuestionList = {}; // type : [];
-        this.nowPlayerList = [];
-        this.nowPlayerScore = []; // each player's score
-        this.nowPlayerName2Index = {};
-        this.candidateList = [];
-
+        this.scoreMultiplier = 1; // 1 means the first stage, 2 means the second stage
     }
-    // TODO: shuffle all question in their types
-    shuffleQuestions(){
-        // Can also shuffle choices, but be sure that correct answer is also correct
+    goToNextStage(){
+        this.scoreMultiplier = 2;
     }
-
-    resetQuestions(){
-    }
-
-    pickQuestion(){
-        // increment counter
-        // Once the counter reaches the end of the question list
-        // Reset the counter to 0
-        // And shuffle questions
-    }
-    
 }
-
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'js/preload.js'),
       nodeIntegration: true
@@ -57,9 +35,9 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('./pages/index.html')
   mainWindow.webContents.once('did-finish-load', function(){
-    mainWindow.webContents.send('candidateList', candidateList);
+    mainWindow.webContents.send('candidateList', game.candidateList);
   })
 
   // Open the DevTools.
@@ -95,47 +73,60 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 
 
-ipcMain.on('startGame', function(e){
-    mainWindow.loadFile('choose.html');
+ipcMain.on('startGame', function(e, playerList){
+    mainWindow.loadFile('./pages/choose.html');
+    game.nowPlayerList = playerList;
+    console.log(game.nowPlayerList);
     // [*] Wait until loaded and send playerList to next page
     mainWindow.webContents.once('did-finish-load', function(){
+        
     })
 })
 
 ipcMain.on("questionTypeDetermined",function(e, choosenTypeStr){
-    mainWindow.loadFile('question.html');
+    mainWindow.loadFile('./pages/question.html');
     mainWindow.webContents.once('did-finish-load', function(){
-        // pick a question
-        //
-        questionDict = {"type": choosenTypeStr, "desc": "以下哪一個含有英文字母", "choices": ["你", "我", "口腔、食道、胃、大腸、小腸、直腸、肛門", "AAA"]};
-        mainWindow.webContents.send('questionInformation', questionDict);
+        // TODO: pick a question
+        pickedQuestionDict = question.pickQuestion(choosenTypeStr);
+        pickedQuestionDict.type = choosenTypeStr;
+        mainWindow.webContents.send('questionInformation', pickedQuestionDict);
     })
 })
 
 ipcMain.on("showAnswer", function(e){
-    mainWindow.loadFile("correctAnswer.html");
+    mainWindow.loadFile("./pages/correctAnswer.html");
     mainWindow.webContents.once('did-finish-load', function(){
         var correctAnswer = "D";
-        mainWindow.webContents.send('showCorrectAnswer', correctAnswer, playerList);
+        var correctAnswerText = "Test";
+        
+        var ret = question.getCorrectAnswer(type);
+        mainWindow.webContents.send('showCorrectAnswer', ret.correctAnswer, ret.correctAnswerText, playerList);
     })
 })
 
 ipcMain.on("nextStage", function(e, correctList){
     // TODO: Add score
-    mainWindow.loadFile("choose.html");
+    // TODO: Update `Game`
+    mainWindow.loadFile("./pages/choose.html");
     mainWindow.webContents.once('did-finish-load', function(){
     })
 })
 ipcMain.on("continueStage", function(e, correctList){
     // TODO: Add score
-    mainWindow.loadFile("choose.html");
+    mainWindow.loadFile("./pages/choose.html");
     mainWindow.webContents.once('did-finish-load', function(){
     })
 })
 ipcMain.on("end", function(e, correctList){
     // TODO: Add score
-    mainWindow.loadFile("choose.html");
+    // TODO: Show result
+
+    mainWindow.loadFile("./pages/result.html");
     mainWindow.webContents.once('did-finish-load', function(){
+        var playerListAndScore = [{"name": "林子雋", "score": 100}];
+        mainWindow.webContents.send("playerListAndScore", playerListAndScore);
     })
 })
 
+function parse_csv(){
+}
