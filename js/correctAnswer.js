@@ -1,12 +1,13 @@
 window.$ = window.jQuery = require('jquery');
 const {ipcRenderer} = require('electron')
 
-ipcRenderer.on('showCorrectAnswer', function(e, correctAnswerChoice, correctAnswerText, playerList){
+ipcRenderer.on('showCorrectAnswer', function(e, correctAnswerChoice, correctAnswerText, playerListAndScore){
     $("#answer").text(correctAnswerChoice + ": " + correctAnswerText);
-    playerList.forEach(function(value){
+    playerListAndScore.forEach(function(player){
+        // player = { name: Name, score: Score}
         var prefix = "<div class='form-check'><input class='form-check-input' type='checkbox'><label class='form-check-label'>"
-        var suffix = "</label></div>"
-        $("#playerList").append(prefix + value + suffix);
+        var suffix = "</label><label>, 目前得分為: "+ player.score +"分</label></div>"
+        $("#playerList").append(prefix + player.name + suffix);
     })
 })
 

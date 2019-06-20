@@ -89,7 +89,8 @@ ipcMain.on("showAnswer", function(e){
     mainWindow.webContents.once('did-finish-load', function(){
         var type = game.nowType;
         var ret = question.getCorrectAnswer(type);
-        mainWindow.webContents.send('showCorrectAnswer', ret.correctAnswer, ret.correctAnswerText, game.nowPlayerList);
+        var playerListAndScore = game.getResult();
+        mainWindow.webContents.send('showCorrectAnswer', ret.correctAnswer, ret.correctAnswerText, playerListAndScore);
     })
 })
 
@@ -99,7 +100,7 @@ ipcMain.on("nextStage", function(e, correctList){
     // go to next stage
     game.goToNextStage();
     // 印出 result 以免程式突然 crash 還有救
-    console.log("Result:")
+    console.log("完成第" + game.questionCounter + "題了!, 而且進入第二階段了")
     console.log(game.getResult());
     mainWindow.loadFile("./pages/choose.html");
     mainWindow.webContents.once('did-finish-load', function(){
@@ -109,7 +110,7 @@ ipcMain.on("continueStage", function(e, correctList){
     // update score
     game.updateScore(correctList);
     // 印出 result 以免程式突然 crash 還有救
-    console.log("Result:")
+    console.log("完成第" + game.questionCounter + "題了!")
     console.log(game.getResult());
 
     mainWindow.loadFile("./pages/choose.html");
@@ -120,7 +121,7 @@ ipcMain.on("end", function(e, correctList){
     // update score
     game.updateScore(correctList);
     // 印出 result 以免程式突然 crash 還有救
-    console.log("Result:")
+    console.log("完成第" + game.questionCounter + "題了!")
     console.log(game.getResult());
     mainWindow.loadFile("./pages/result.html");
     mainWindow.webContents.once('did-finish-load', function(){

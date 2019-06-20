@@ -1,5 +1,8 @@
 #playerList {
-    font-size: 28px;
-    height: 50vh;
+    font-size: 40px;
+    height: 40vh;
     overflow-y: scroll;
+}
+input[type="checkbox"]{
+    zoom: 150%;
 }

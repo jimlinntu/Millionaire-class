@@ -6,6 +6,7 @@ class Game{
         this.nowPlayerName2Score= {}; // playerName -> Score
         this.candidateList = []; // all available players name
         this.scoreMultiplier = 1; // 1 means the first stage, 2 means the second stage
+        this.questionCounter = 0; // 第幾題了
     }
     // load player from file
     loadPlayer(filename){
@@ -29,6 +30,8 @@ class Game{
         correctPlayerList.forEach(function(playerName){
             gameThis.nowPlayerName2Score[playerName] += gameThis.scoreMultiplier * 1;
         })
+        // update the question counter
+        this.questionCounter++;
     }
     // Go to second stage
     goToNextStage(){
