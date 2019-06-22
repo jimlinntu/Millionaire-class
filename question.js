@@ -164,9 +164,9 @@ class Question{
 // Instantiate question class
 question = new Question(records);
 
-if(DEBUG){
+//if(DEBUG){
     console.log(util.inspect(question, false, null, true));
-}
+//}
 
 
 function test(){
