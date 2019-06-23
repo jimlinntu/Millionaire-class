@@ -2,7 +2,12 @@ window.$ = window.jQuery = require('jquery');
 const {ipcRenderer} = require('electron')
 
 ipcRenderer.on('showCorrectAnswer', function(e, correctAnswerChoice, correctAnswerText, playerListAndScore){
-    $("#answer").text(correctAnswerChoice + ": " + correctAnswerText);
+    // Ignore 一字千金
+    if(correctAnswerText){
+        $("#answer").text(correctAnswerChoice + ": " + correctAnswerText);
+    }else{
+        $("#answer").text(correctAnswerChoice);
+    }
     playerListAndScore.forEach(function(player){
         // player = { name: Name, score: Score}
         var prefix = "<div class='form-check'><input class='form-check-input' type='checkbox'><label class='form-check-label'>"

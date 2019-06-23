@@ -1,7 +1,7 @@
 /* https://stackoverflow.com/questions/21168521/table-fixed-header-and-scrollable-body */
 #tableFixHead {
     overflow-y: auto;
-    height: 50vh;
+    height: 80vh;
 }
 #tableFixHead thead th {
     position: sticky;

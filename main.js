@@ -80,7 +80,7 @@ ipcMain.on("questionTypeDetermined",function(e, choosenTypeStr){
         pickedQuestionDict.type = choosenTypeStr;
         // record game current question type
         game.nowType = choosenTypeStr;
-        mainWindow.webContents.send('questionInformation', pickedQuestionDict);
+        mainWindow.webContents.send('questionInformation', pickedQuestionDict, game.scoreMultiplier);
     })
 })
 

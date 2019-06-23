@@ -2,7 +2,7 @@ window.$ = window.jQuery = require('jquery');
 const {ipcRenderer} = require('electron')
 
 var questionDict_global = null;
-ipcRenderer.on('questionInformation', function(event, questionDict){
+ipcRenderer.on('questionInformation', function(event, questionDict, stage){
     // Save it to global variable
     questionDict_global = questionDict;
 
@@ -16,6 +16,23 @@ ipcRenderer.on('questionInformation', function(event, questionDict){
             $("#choices").append("<div class='col-12 alert alert-primary'><h3>" + choice + "</h3></div>");
         })
     }
+    // First stage
+    var countdownTime = null;
+    if(stage == 1){
+        countdownTime = 50;
+    }else if(stage == 2){
+        countdownTime = 30;
+    }else{
+        console.log(false, "stage should be 1 or 2");
+    }
+    // Register countdown function : https://www.w3schools.com/howto/howto_js_countdown.asp
+    $("#remainSecond").text(countdownTime).css("color", "red"); 
+    setInterval(function(){
+        if(countdownTime != 0){
+            countdownTime--;
+            $("#remainSecond").text(countdownTime).css("color", "red"); // text red
+        }
+    }, 1000);
 });
 
 
@@ -53,3 +70,4 @@ function shuffle(a) {
     }
     return a;
 }
+
