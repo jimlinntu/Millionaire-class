@@ -13,11 +13,13 @@
   "author": "jimlinntu",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^5.0.4"
+    "electron": "^5.0.4",
+    "electron-packager": "^14.0.0"
   },
   "dependencies": {
     "csv": "^5.1.1",
     "ejs": "^2.6.2",
-    "ejs-electron": "^2.0.3"
+    "ejs-electron": "^2.0.3",
+    "jquery": "^3.4.1"
   }
 }
