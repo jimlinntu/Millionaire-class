@@ -1,9 +1,10 @@
 const fs = require('fs')
 const parse = require('csv-parse/lib/sync')
+const path = require('path')
 const util = require('util')
 const assert = require('assert')
 var DEBUG = false
-var fileString = fs.readFileSync('./data/data.csv', {encoding: 'utf8'});
+var fileString = fs.readFileSync(path.resolve(__dirname, 'data/data.csv'), {encoding: 'utf8'});
 var records = parse(fileString, {
     columns: true
 })

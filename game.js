@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 class Game{
     constructor(){
         this.nowType = null; // record whether the type of quesiton players are playing
@@ -52,7 +53,7 @@ class Game{
 
 
 game = new Game();
-game.loadPlayer("./data/player.txt");
+game.loadPlayer(path.resolve(__dirname, "data/player.txt"));
 console.log(game.candidateList);
 
 module.exports = game;

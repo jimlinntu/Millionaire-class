@@ -1,8 +1,8 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
-const question = require('./question.js')
-const game = require('./game.js')
+const question = require(path.resolve(__dirname, 'question.js'))
+const game = require(path.resolve(__dirname, 'game.js'))
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -22,7 +22,7 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('./pages/index.html')
+  mainWindow.loadFile(path.resolve(__dirname, 'pages/index.html'))
   mainWindow.webContents.once('did-finish-load', function(){
     mainWindow.webContents.send('candidateList', game.candidateList);
   })
@@ -61,7 +61,7 @@ app.on('activate', function () {
 
 
 ipcMain.on('startGame', function(e, playerList){
-    mainWindow.loadFile('./pages/choose.html');
+    mainWindow.loadFile(path.resolve(__dirname, 'pages/choose.html'));
     // Initialize current player list
     game.initPlayer(playerList);
     console.log("Player List: ");
@@ -73,7 +73,7 @@ ipcMain.on('startGame', function(e, playerList){
 })
 
 ipcMain.on("questionTypeDetermined",function(e, choosenTypeStr){
-    mainWindow.loadFile('./pages/question.html');
+    mainWindow.loadFile(path.resolve(__dirname, 'pages/question.html'));
     mainWindow.webContents.once('did-finish-load', function(){
         // pick a question
         pickedQuestionDict = question.pickQuestion(choosenTypeStr);
@@ -85,7 +85,7 @@ ipcMain.on("questionTypeDetermined",function(e, choosenTypeStr){
 })
 
 ipcMain.on("showAnswer", function(e){
-    mainWindow.loadFile("./pages/correctAnswer.html");
+    mainWindow.loadFile(path.resolve(__dirname, "pages/correctAnswer.html"));
     mainWindow.webContents.once('did-finish-load', function(){
         var type = game.nowType;
         var ret = question.getCorrectAnswer(type);
@@ -102,7 +102,7 @@ ipcMain.on("nextStage", function(e, correctList){
     // 印出 result 以免程式突然 crash 還有救
     console.log("完成第" + game.questionCounter + "題了!, 而且進入第二階段了")
     console.log(game.getResult());
-    mainWindow.loadFile("./pages/choose.html");
+    mainWindow.loadFile(path.resolve(__dirname, "pages/choose.html"));
     mainWindow.webContents.once('did-finish-load', function(){
     })
 })
@@ -113,7 +113,7 @@ ipcMain.on("continueStage", function(e, correctList){
     console.log("完成第" + game.questionCounter + "題了!")
     console.log(game.getResult());
 
-    mainWindow.loadFile("./pages/choose.html");
+    mainWindow.loadFile(path.resolve(__dirname, "pages/choose.html"));
     mainWindow.webContents.once('did-finish-load', function(){
     })
 })
@@ -123,7 +123,7 @@ ipcMain.on("end", function(e, correctList){
     // 印出 result 以免程式突然 crash 還有救
     console.log("完成第" + game.questionCounter + "題了!")
     console.log(game.getResult());
-    mainWindow.loadFile("./pages/result.html");
+    mainWindow.loadFile(path.resolve(__dirname, "pages/result.html"));
     mainWindow.webContents.once('did-finish-load', function(){
         var playerListAndScore = game.getResult();
         mainWindow.webContents.send("playerListAndScore", playerListAndScore);
