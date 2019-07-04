@@ -91,9 +91,10 @@ class Question{
     shuffleQuestions(){
         // Can also shuffle choices, but be sure that correct answer is also correct
         for(var type in this.type2QuestionList){
-            if(type == "一字千金") continue; // do not shuffle 一字千金 題型
-            // shuffle all
+            // shuffle the order of all kinds of questions
             this.type2QuestionList[type] = this.shuffle(this.type2QuestionList[type])
+            // TODO: Fix it
+            if(type == "一字千金") continue; // do not shuffle 一字千金 題型
             // shuffle each choices
             var shuffle_indices = [0, 1, 2, 3]
             for(var j = 0; j < this.type2QuestionList[type].length; j++){
@@ -111,6 +112,7 @@ class Question{
             console.log(util.inspect(this.type2QuestionList, false, null));
         }
     }
+    // Apply a shuffled indices list onto an array
     apply_shuffle_indices(array, indices){
         var applied_array = new Array(indices.length); // 
         for(var i = 0; i < indices.length; i++){
@@ -165,9 +167,9 @@ class Question{
 // Instantiate question class
 question = new Question(records);
 
-//if(DEBUG){
+if(DEBUG){
     console.log(util.inspect(question, false, null, true));
-//}
+}
 
 
 function test(){
@@ -182,6 +184,7 @@ function test(){
     })
 
 }
+// An unit test
 if(DEBUG){
     test();
 }
