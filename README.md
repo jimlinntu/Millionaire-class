@@ -13,9 +13,11 @@ DEBUG=electron-packager ./node_modules/electron-packager/bin/electron-packager.j
 ```
 ## MacOS Application Version
 
-TODO: Add link
+<https://drive.google.com/file/d/1-wzJJb-qaQYQRG8kertKJj2jAub6GYrg/view?usp=sharing>
 
 ## Windows Application Version
+
+<https://drive.google.com/file/d/1iLbu6d2-5V9z-Sz0IqHKpSU-1YsCGXpj/view?usp=sharing>
 
 TODO: Add link
 
