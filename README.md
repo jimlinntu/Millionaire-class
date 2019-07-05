@@ -19,8 +19,6 @@ DEBUG=electron-packager ./node_modules/electron-packager/bin/electron-packager.j
 
 <https://drive.google.com/file/d/1iLbu6d2-5V9z-Sz0IqHKpSU-1YsCGXpj/view?usp=sharing>
 
-TODO: Add link
-
 # Run the application
 ```
 npm start
