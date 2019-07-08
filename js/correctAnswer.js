@@ -33,6 +33,28 @@ $("#end").click(function(){
     ipcRenderer.send("end", correctList);
 })
 
+$("#selectAll").click(function(){
+    var checkboxList = $("#playerList .form-check .form-check-input");
+    var allselect = true;
+    checkboxList.each(function(index){
+        // if not checked
+        if(!$(this).prop("checked")){
+            allselect = false;
+        }
+    })
+
+    if(allselect){
+        // Turn all checkboxes into empty
+        checkboxList.each(function(index){
+            $(this).prop("checked", false);
+        })
+    }else{
+        checkboxList.each(function(index){
+            $(this).prop("checked", true);
+        })
+    }
+})
+
 function computePlayerCorrectList(){
     var checkboxList = $("#playerList .form-check .form-check-input");
     var labelList = $("#playerList .form-check .form-check-label");
