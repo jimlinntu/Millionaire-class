@@ -1,5 +1,14 @@
 # Millionaire-class
 
+# Demo
+
+![index](./demoImage/index.png)
+![choose](./demoImage/choose.png)
+![question](./demoImage/question.png)
+![correctAnswer](./demoImage/correctAnswer.png)
+![result](./demoImage/result.png)
+
+
 # Preparation
 ```
 cd Millionaire-class
