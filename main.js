@@ -130,5 +130,13 @@ ipcMain.on("end", function(e, correctList){
     })
 })
 
-function parse_csv(){
-}
+ipcMain.on("restart", function(e){
+    // Reset the game
+    game.reset();
+    // Reload teh home page
+    mainWindow.loadFile(path.resolve(__dirname, "pages/index.html"));
+    mainWindow.webContents.once('did-finish-load', function(){
+        mainWindow.webContents.send('candidateList', game.candidateList);
+    })
+})
+

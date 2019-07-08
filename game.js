@@ -9,6 +9,13 @@ class Game{
         this.scoreMultiplier = 1; // 1 means the first stage, 2 means the second stage
         this.questionCounter = 0; // 第幾題了
     }
+    reset(){
+        this.nowType = null; // record whether the type of quesiton players are playing
+        this.nowPlayerList = []; // player list that is being selected in this game
+        this.nowPlayerName2Score= {}; // playerName -> Score
+        this.scoreMultiplier = 1; // 1 means the first stage, 2 means the second stage
+        this.questionCounter = 0; // 第幾題了
+    }
     // load player from file
     loadPlayer(filename){
         var fileString = fs.readFileSync(filename, {encoding: 'utf8'});

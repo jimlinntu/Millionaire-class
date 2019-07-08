@@ -10,3 +10,8 @@ ipcRenderer.on("playerListAndScore", function(event, playerListAndScore){
     })
 })
 
+// Restart the game (重新開始)
+$("#restart").click(function(){
+    // send a restart signal to the main process
+    ipcRenderer.send("restart");
+})
